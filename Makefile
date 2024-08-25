@@ -9,12 +9,21 @@
 #
 # delete all comments above this when you use this as your Makefile
 
-TARGETS := atari apple2 apple2enh c64
+TARGETS := apple2 apple2enh
+#TARGETS := atari apple2 apple2enh c64
 #TARGETS := atari apple2 apple2enh c64 c128
 
 PROGRAM := contiki
 
+
+# Set DEBUG to true or false
+DEBUG := true
+export DEBUG
+
+
+
 # where your disk building tools are
+# this is just for building the PO Apple2 disks - repoint if you have ac elsewhere
 export FUJINET_BUILD_TOOLS_DIR := ../fujinet-build-tools
 
 export FUJINET_LIB_VERSION := 4.5.2
@@ -28,9 +37,9 @@ SUB_TASKS := clean disk test release
 
 all:
 	@for target in $(TARGETS); do \
-		echo "-------------------------------------"; \
+		echo "--------------------------------------------------"; \
 		echo "Building target: $$target for program: $(PROGRAM)"; \
-		echo "-------------------------------------"; \
+		echo "--------------------------------------------------"; \
 		$(MAKE)  -f ./makefiles/build.mk CURRENT_TARGET=$$target PROGRAM=$(PROGRAM) $(MAKECMDGOALS); \
 	done
 
