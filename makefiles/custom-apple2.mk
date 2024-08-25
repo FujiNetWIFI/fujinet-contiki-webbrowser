@@ -1,6 +1,9 @@
-# custom-apple2.mk
-#
-$(info >>>>Starting custom-apple2.mk)
+###################################################################
+# Apple
+###################################################################
+ifeq ($(DEBUG),true)
+    $(info >>>Starting custom-apple2.mk)
+endif
 
 
 # COMPILE FLAGS
@@ -11,9 +14,6 @@ LDFLAGS = -Wl -D,__HIMEM__=0xBF00
 # LDFLAGS += -Wl -D,__RESERVED_MEMORY__=0x2000
 #LDFLAGS += --start-addr 0x4400
 #LDFLAGS += -C cfg/atari.cfg
-
-$(info >>> My LDFLAGS: $(LDFLAGS))
-
 
 
 #################################################################

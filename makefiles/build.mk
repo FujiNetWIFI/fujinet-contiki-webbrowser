@@ -32,7 +32,11 @@
 #     VERSION_STRING := $(file < $(VERSION_FILE))
 #     CFLAGS += -DVERSION_STRING=\"$(VERSION_STRING)\"
 
-$(info >>>Starting build.mk)
+
+ifeq ($(DEBUG),true)
+    $(info >Starting build.mk)
+endif
+
 
 
 # Ensure WSL2 Ubuntu and other linuxes use bash by default instead of /bin/sh, which does not always like the shell commands.
@@ -108,17 +112,27 @@ CFLAGS += --include-dir $(SRCDIR)
 # load the sub-makefiles
 #
 
-
-$(info >>>go load common.mk)
+ifeq ($(DEBUG),true)
+    $(info >>load common.mk)
+endif
 
 -include ./makefiles/common.mk
 
-$(info >>>go load custom-$(CURRENT_PLATFORM).mk)
+
+ifeq ($(DEBUG),true)
+    $(info >>load custom-$(CURRENT_PLATFORM).mk)
+endif
 
 -include ./makefiles/custom-$(CURRENT_PLATFORM).mk
 
+
+ifeq ($(DEBUG),true)
+    $(info >>load application.mk)
+endif
+
 # allow for application specific config
 -include ./application.mk
+
 
 # allow for local env specific deployment options
 -include ./deployment.mk
@@ -180,6 +194,13 @@ SRC_INC_DIRS := \
   $(sort $(dir $(wildcard $(SRCDIR)/common/*))) \
   $(SRCDIR)
 
+
+ifeq ($(DEBUG),true)
+    $(info SRCDIR is set to: $(SRCDIR) )
+endif
+
+
+
 vpath %.c $(SRC_INC_DIRS)
 
 $(OBJDIR)/$(CURRENT_TARGET)/%.o: %.c $(VERSION_FILE) | $(OBJDIR)
@@ -193,12 +214,21 @@ $(OBJDIR)/$(CURRENT_TARGET)/%.o: %.s $(VERSION_FILE) | $(OBJDIR)
 	$(CC) -t $(CURRENT_TARGET) -c --create-dep $(@:.o=.d) $(ASFLAGS) -o $@ $<
 
 
-@echo " in build.mk and CFLAGS are: $(CFLAGS)"
-
 $(BUILD_DIR)/$(PROGRAM_TGT): $(OBJECTS) $(LIBS) | $(BUILD_DIR)
 	$(CC) -t $(CURRENT_TARGET) $(LDFLAGS) -o $@ $^
 
 $(PROGRAM_TGT): $(BUILD_DIR)/$(PROGRAM_TGT) | $(BUILD_DIR)
+
+
+ifeq ($(DEBUG),true)
+    $(info PROGRAM_TGT is set to: $(PROGRAM_TGT) )
+    $(info BUILD_DIR is set to: $(BUILD_DIR) )
+    $(info CURRENT_TARGET is set to: $(CURRENT_TARGET) )
+    $(info ........................... )
+endif
+
+
+
 
 test: $(PROGRAM_TGT)
 	$(PREEMUCMD)

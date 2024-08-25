@@ -1,13 +1,15 @@
-# common.mk
-# 
+###################################################################
+# Common across Platforms
+###################################################################
+ifeq ($(DEBUG),true)
+    $(info >>>Starting common.mk)
+endif
 
-$(info >>>>Starting common.mk)
-
-
+# Pull in FujiNet-Lib
 -include ./makefiles/fujinet-lib.mk
 
-# For Contiki Web Browser - 2024
-LDFLAGS += -Wl -D,__HIMEM__=0xBF00
+
+#contiki
 CFLAGS += -Oris -D AUTOSTART_ENABLE -W -unused-param
 
 CFLAGS += -Osir
