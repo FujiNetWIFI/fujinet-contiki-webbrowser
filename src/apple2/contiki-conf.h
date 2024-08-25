@@ -37,19 +37,29 @@
 
 #include "6502def.h"
 
+#ifndef __APPLE2ENH__
 #define CH_CURS_UP   0x0F  /* Ctrl-O */
 #define CH_CURS_DOWN 0x0C  /* Ctrl-L */
 #define CH_DEL       0x10  /* Ctrl-P */
+#endif
 
 #define CTK_CONF_MENU_KEY         CH_ESC
 #define CTK_CONF_WINDOWSWITCH_KEY 0x17  /* Ctrl-W */
 #define CTK_CONF_WIDGETUP_KEY     0x01  /* Ctrl-A */
 #define CTK_CONF_WIDGETDOWN_KEY   '\t'  /* Tab or Ctrl-I */
 
+#ifdef __APPLE2ENH__
+#define MOUSE_CONF_XTOC(x) ((x) * 2 / 7)
+#else
 #define MOUSE_CONF_XTOC(x) ((x) / 7)
+#endif
 #define MOUSE_CONF_YTOC(y) ((y) / 8)
 
+#ifdef __APPLE2ENH__
+#define WWW_CONF_WEBPAGE_WIDTH  80
+#else
 #define WWW_CONF_WEBPAGE_WIDTH  40
+#endif
 #define WWW_CONF_WEBPAGE_HEIGHT 19
 #define WWW_CONF_HISTORY_SIZE    4
 #define WWW_CONF_WGET_EXEC(url) exec("wget", url)

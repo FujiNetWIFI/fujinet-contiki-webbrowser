@@ -46,6 +46,10 @@ void clock_update(void);
 void
 main(void)
 {
+#ifdef __APPLE2ENH__
+  videomode(VIDEOMODE_80COL);
+#endif
+
   process_init();
   procinit_init();
   autostart_start(autostart_processes);
@@ -53,7 +57,6 @@ main(void)
   log_message("Contiki up and running ...", "");
 
   while(1) {
-
     process_run();
 
     etimer_request_poll();
